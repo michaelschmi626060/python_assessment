@@ -1,6 +1,7 @@
 # CMS Hospital Dataset Downloader
 
-This Python script automates the download and processing of **CMS Hospital datasets** from the [data.cms.gov](https://data.cms.gov/) API. It fetches only the latest datasets under the "Hospitals" theme and saves them as CSV files with standardized column names in snake_case format.
+This Python script automates the download and processing of **CMS Hospital datasets** from the [data.cms.gov](https://data.cms.gov/) API. It fetches only the latest datasets under the "Hospitals" theme and saves them as CSV files with standardized column names in snake_case format.  The csv files will be saved in the directory 
+hospital_datasets relative to where you are running the script (your current working directory).
 
 ---
 
