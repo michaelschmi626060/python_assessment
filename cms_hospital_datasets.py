@@ -1,6 +1,21 @@
 ###### LINUX CRON JOB SCHEDULE EX:  0 2 * * * /usr/bin/python3 /path/to/cms_hospital_datasets.py
 # Note:  The above will run at 2am system time daily
 
+import os
+import subprocess
+import sys
+
+# Function to install modules from requirements.txt
+def install_requirements():
+    if os.path.exists("requirements.txt"):
+        print("Installing required modules from requirements.txt...")
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
+    else:
+        print("requirements.txt not found. Please ensure it's in the correct location.")
+
+# Install requirements if not already installed
+install_requirements()
+
 ###### Libraries and Imports
 import os
 import re
