@@ -1,0 +1,82 @@
+STAR SCHEMA DATA MODEL — Food Truck Company
+
+FACT TABLES:
+
+fact_sales:
+Column Name	Type	Description
+sale_id	INT (PK)	Unique ID for each sale
+sale_datetime	DATETIME	Timestamp of the transaction
+location_id	INT (FK)	Link to dim_location
+menu_item_id	INT (FK)	Link to dim_menu_item
+employee_id	INT (FK)	Who completed the sale
+customer_id	INT (FK)	Who made the purchase
+quantity_sold	INT	Number of items sold
+sale_amount	DECIMAL	Total price of the transaction (with tax)
+discount_applied	DECIMAL	Discount amount applied
+payment_method	VARCHAR	e.g., 'Credit Card', 'Cash', 'Mobile'
+
+fact_inventory_usage:
+Column Name	Type	Description
+inventory_usage_id	INT (PK)	Unique ID for inventory transaction
+menu_item_id	INT (FK)	Menu item that used the inventory
+location_id	INT (FK)	Food truck location
+date	DATE	Date inventory was consumed
+ingredient_id	INT (FK)	Ingredient used
+quantity_used	DECIMAL	Units used (e.g., lbs, pieces, oz)
+
+DIMENSION TABLES
+
+dim_location:
+Column Name	Type	Description
+location_id	INT (PK)	Unique identifier for truck
+location_name	VARCHAR	e.g., "Downtown Truck", "Uptown"
+address	VARCHAR	Optional, if static
+city	VARCHAR	
+state	VARCHAR	
+region	VARCHAR	Optional grouping (e.g., "West")
+
+dim_menu_item:
+Column Name	Type	Description
+menu_item_id	INT (PK)	Unique identifier
+item_name	VARCHAR	e.g., "Taco", "Burger"
+item_category	VARCHAR	e.g., "Main", "Drink", "Dessert"
+unit_price	DECIMAL	Base price
+is_vegetarian	BOOLEAN	Dietary info
+is_gluten_free	BOOLEAN	
+
+dim_ingredient:
+Column Name	Type	Description
+ingredient_id	INT (PK)	Unique identifier
+ingredient_name	VARCHAR	e.g., "Beef", "Lettuce"
+unit_of_measure	VARCHAR	e.g., "oz", "lbs", "pcs"
+supplier_name	VARCHAR	Optional
+cost_per_unit	DECIMAL	Optional for cost tracking
+
+dim_employee:
+Column Name	Type	Description
+employee_id	INT (PK)	Unique identifier
+first_name	VARCHAR	
+last_name	VARCHAR	
+hire_date	DATE	
+role	VARCHAR	e.g., "Chef", "Cashier", "Manager"
+location_id	INT (FK)	Assigned truck
+
+dim_customer:
+Column Name	Type	Description
+customer_id	INT (PK)	Unique ID
+first_name	VARCHAR	Optional if available
+last_name	VARCHAR	Optional
+loyalty_status	VARCHAR	e.g., "Gold", "Silver", "New"
+email	VARCHAR	Optional for promotions
+phone_number	VARCHAR	Optional
+
+dim_date:
+Column Name	Type	Description
+date	DATE (PK)	
+day	INT	Day of month
+month	INT	Month number
+month_name	VARCHAR	e.g., "January"
+quarter	INT	
+year	INT	
+weekday_name	VARCHAR	e.g., "Monday"
+is_weekend	BOOLEAN
