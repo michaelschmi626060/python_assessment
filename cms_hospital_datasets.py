@@ -9,6 +9,7 @@ import requests
 import pandas as pd
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
+from io import StringIO  # Added for handling the CSV content from a string
 
 ###### Declare Constants
 
@@ -40,12 +41,11 @@ def to_snake_case(s):
 def fetch_datasets():
     response = requests.get(METASTORE_URL)
     response.raise_for_status()
-    #print(response.json())
     return response.json()
 
 def download_and_process(dataset):
     title = dataset["title"]
-    updated_at = dataset["updatedAt"]
+    updated_at = dataset["modified"]
     dataset_id = dataset["identifier"]
 
     # Check if updated
@@ -59,8 +59,8 @@ def download_and_process(dataset):
     response = requests.get(csv_url)
     response.raise_for_status()
 
-    # Load CSV
-    df = pd.read_csv(pd.compat.StringIO(response.text))
+    # Load CSV into DataFrame
+    df = pd.read_csv(StringIO(response.text))
 
     # Rename columns to snake_case
     df.columns = [to_snake_case(col) for col in df.columns]
