@@ -40,7 +40,8 @@ def to_snake_case(s):
 def fetch_datasets():
     response = requests.get(METASTORE_URL)
     response.raise_for_status()
-    return response.json()["data"]
+    print(response.json())  # 👈 add this line
+    return response.json()
 
 def download_and_process(dataset):
     title = dataset["title"]
