@@ -9,7 +9,7 @@ import requests
 import pandas as pd
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
-from io import StringIO  # Added for handling the CSV content from a string
+from io import StringIO
 
 ###### Declare Constants
 
