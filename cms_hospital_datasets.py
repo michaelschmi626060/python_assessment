@@ -41,7 +41,6 @@ def to_snake_case(s):
 def fetch_datasets():
     response = requests.get(METASTORE_URL)
     response.raise_for_status()
-    print(response.json())
     return response.json()
 
 def download_and_process(dataset):
@@ -56,20 +55,12 @@ def download_and_process(dataset):
         return
 
     print(f"Downloading: {title}")
-    try:
-        csv_url = dataset["distribution"][0]["downloadURL"]
-        response = requests.get(csv_url)
-        response.raise_for_status()  # Ensure we don't continue if there's a problem with the request
-    except requests.exceptions.RequestException as e:
-        print(f"Error downloading {title}: {e}")
-        return
+    csv_url = dataset["distribution"][0]["downloadURL"]
+    response = requests.get(csv_url)
+    response.raise_for_status()
 
     # Load CSV into DataFrame
-    try:
-        df = pd.read_csv(StringIO(response.text))
-    except Exception as e:
-        print(f"Error processing {title}: {e}")
-        return
+    df = pd.read_csv(StringIO(response.text))
 
     # Rename columns to snake_case
     df.columns = [to_snake_case(col) for col in df.columns]
@@ -77,12 +68,7 @@ def download_and_process(dataset):
     # Save to file
     safe_title = re.sub(r"[^\w]+", "_", title.lower())
     filename = f"{safe_title}.csv"
-    try:
-        df.to_csv(os.path.join(DATA_DIR, filename), index=False)
-        print(f"Saved dataset: {filename}")
-    except Exception as e:
-        print(f"Error saving file for {title}: {e}")
-        return
+    df.to_csv(os.path.join(DATA_DIR, filename), index=False)
 
     # Update metadata
     run_metadata[dataset_id] = updated_at
